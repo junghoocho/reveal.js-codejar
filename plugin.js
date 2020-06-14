@@ -78,4 +78,20 @@ function init(reveal) {
     }
 }
 
+/* Reveal.js plugin API:
+   (1) The plugin js file must create one global object
+   (2) The global object should be (a function that returns) 
+       an object with `id` property (of string type)
+       and optionally `init` property (of function type)
+   (3) The global object's name will be listed in the `plugins: [ ... ]`
+       property during slide deck initialization
+   (4) The object's `id` is the "key" the plugin is registered with
+   (5) If exists, the `init` method will be called as part of the slide 
+       initialization process
+   (6) If the `init` method returns a promise, the slide "ready" event 
+       is fired only after the promise resolves
+
+   The global variable RevealCodeJar will be the plugin's global object.
+   If RevealCodeJar already exists, we don't need to do anything */
+
 window.RevealCodeJar = window.RevealCodeJar || { id: pluginID, init: init, CodeJar: createEditor };
