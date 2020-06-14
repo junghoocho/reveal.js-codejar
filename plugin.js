@@ -10,8 +10,7 @@ import { withLineNumbers } from "./lib/linenumbers.js";
 // plugin ID
 const pluginID = 'codejar';
 let options = {};
-
-let deck = null;
+let deck = Reveal;
 
 // text highlight function
 function highlight(editor) {
