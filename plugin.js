@@ -48,18 +48,6 @@ function createEditor(element) {
     return element.dataCodeJar;
 }
 
-// setup CodeJar editors
-function setupEditors() {
-    if (!deck.isReady()) {
-        deck.on('ready', setupEditors);
-        return;
-    }
-
-    for (let editor of deck.getRevealElement().querySelectorAll('.codejar')) {
-        createEditor(editor, options);
-    }
-}
-
 function init(reveal) {
     // save reveal to deck
     deck = reveal;
@@ -77,7 +65,9 @@ function init(reveal) {
     head.appendChild(style);
 
     // setup editors
-    setupEditors();
+    for (let editor of deck.getRevealElement().querySelectorAll('.codejar')) {
+        createEditor(editor, options);
+    }
 }
 
 window.RevealCodeJar = window.RevealCodeJar || { id: pluginID, init: init, codejar: createEditor };
