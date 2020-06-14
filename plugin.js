@@ -25,27 +25,35 @@ function highlight(editor) {
     }
 }
 
-// create editor from the passed element with the given options
-function createEditor(element) {
-    // check if the element has already been setup
-    if (element.dataCodeJar) {
-        return element.dataCodeJar;
+// create the CodeJar editor for the element
+function createEditor(element, highlighter, codeJarOptions) {
+    // check if the element has already been setup as CodeJar Editor
+    if (element.codeJarObject) {
+        return element.codeJarObject;
     }
 
-    // set up syntax highlighter
-    let highlighter = highlight;
-    // check if line numbers are needed
-    if (element.hasAttribute("data-line-numbers") &&
-        element.getAttribute("data-line-numbers").toLowerCase() !== "false") {
-        highlighter = withLineNumbers(highlight);
+    // get syntax highlighter
+    if (highlighter === undefined) {
+        // check if line numbers are needed
+        if (element.hasAttribute("data-line-numbers") &&
+            element.getAttribute("data-line-numbers").toLowerCase() !== "false") {
+            highlighter = withLineNumbers(highlight);
+        } else {
+            highlighter = highlight;
+        }
     }
 
-    // stop keypress event propagating upward
+    // get codeJarOptions
+    if (codeJarOptions === undefined) {
+        codeJarOptions = options;
+    }
+
+    // prevent the keypress event from propagating upward
     element.addEventListener("keypress", (event) => { event.stopPropagation(); });
 
     // create CodeJar Editor
-    element.dataCodeJar = CodeJar(element, highlighter, options);
-    return element.dataCodeJar;
+    element.codeJarObject = CodeJar(element, highlighter, codeJarOptions);
+    return element.codeJarObject;
 }
 
 function init(reveal) {
@@ -66,8 +74,8 @@ function init(reveal) {
 
     // setup editors
     for (let editor of deck.getRevealElement().querySelectorAll('.codejar')) {
-        createEditor(editor, options);
+        createEditor(editor);
     }
 }
 
-window.RevealCodeJar = window.RevealCodeJar || { id: pluginID, init: init, codejar: createEditor };
+window.RevealCodeJar = window.RevealCodeJar || { id: pluginID, init: init, CodeJar: createEditor };
