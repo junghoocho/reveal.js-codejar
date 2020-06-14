@@ -27,8 +27,13 @@ function highlight(editor) {
 
 // create editor from the passed element with the given options
 function createEditor(element) {
-    let highlighter = highlight;
+    // check if the element has already been setup
+    if (element.dataCodeJar) {
+        return element.dataCodeJar;
+    }
 
+    // set up syntax highlighter
+    let highlighter = highlight;
     // check if line numbers are needed
     if (element.hasAttribute("data-line-numbers") &&
         element.getAttribute("data-line-numbers").toLowerCase() !== "false") {
@@ -39,7 +44,8 @@ function createEditor(element) {
     element.addEventListener("keypress", (event) => { event.stopPropagation(); });
 
     // create CodeJar Editor
-    return CodeJar(element, highlighter, options);
+    element.dataCodeJar = CodeJar(element, highlighter, options);
+    return element.dataCodeJar;
 }
 
 // setup CodeJar editors
